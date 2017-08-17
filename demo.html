@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        p{
+            text-align: center;
+            font-size:30px;
+            color:hotpink;
+        }
+        .x{
+            background-color: pink;
+            position:absolute;
+            top:0;
+            right:-20px;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        #box {
+            width: 400px;
+            height: 400px;
+            background-color: skyblue;
+            margin: 100px auto;
+            position: relative;
+            padding-top:30px;
+        }
+
+        input {
+            width: 50px;
+            position: absolute;
+            bottom:5px;
+        }
+        #btn1{
+            right:80px;
+        }
+        #btn2,#btn4{
+            right:20px;
+        }
+        #btn3{
+            bottom:200px;
+            right:20px;
+        }
+        .hidden{
+            display: none;
+        }
+        .show{
+            display: block;
+        }
+        .wow{
+            width: 100%;
+            height: 100%;
+            position:relative;
+        }
+        .bg,.cont{
+            position: absolute;
+            left:0;
+            bottom:0;
+            height: 100%;
+            width:100%;
+            font-size: 25px;
+            color:aquamarine;
+            text-align: center;
+            line-height: 400px;
+        }
+        .bg{
+            background:pink;
+            opacity: .7;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div class='wow hidden' id='in' >
+            <div class="bg"></div>
+            <div class="cont">关闭窗口也改变不了你喜欢我的事实</div>
+        </div>
+        
+        <div class='show' id='out'>
+            <div class='x' id='dian'>X</div>
+            <p>你喜欢我吗?</p>
+            <input type="button"  value="是的" id='btn1'>
+            <input type="button"  value="不是" id='btn2'>
+            <input type="button"  value="不是" class='hidden' id='btn3'>
+            <input type="button"  value="不是" class='hidden' id='btn4'>
+        </div>
+    </div>
+
+    <script>
+        var box=document.getElementById('box');
+        var btn1=document.getElementById('btn1');
+        var btn2=document.getElementById('btn2');
+        btn2.onmouseover=function(){
+            animate(btn2,{'bottom':200},function(){
+                btn2.className='hidden';
+                btn3.className='show';
+            })
+        }
+        btn3.onmouseover=function(){
+            animate(btn3,{'bottom':5},function(){
+                btn2.className='hidden';
+                btn3.className='hidden';
+                btn4.className='show';
+            })
+        }
+        btn4.onmouseover=function(){
+            btn4.value='是的';
+            btn1.value='不是';
+        }
+        btn1.onmouseover=function(){
+            btn1.value='是的';
+            btn4.value='不是';
+        }
+
+        var dian=document.getElementById('dian');
+        var opc=document.getElementById('in');
+        var out=document.getElementById('out');
+        dian.onclick=function(){
+            opc.className='show';
+           document.removeChild('out');
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         function animate(obj, json, fn) {
+        clearInterval(obj.timer);
+        obj.timer = setInterval(function () {
+            var flag = true;
+            for (var k in json) {
+                var leader = parseInt(getStyle(obj, k))||0;
+                var target = json[k];
+                var step = (target - leader) / 10;
+                step = step > 0 ? Math.ceil(step) : Math.floor(step);
+                leader = leader + step;
+                obj.style[k] = leader + "px";
+                if (leader !== target) {
+                    flag = false;
+                }
+            }
+            if (flag) {
+                clearInterval(obj.timer);
+                if (fn) {//如果有才调用
+                    fn();//动画执行完成后执行
+                }
+            }
+        }, 15);
+    }
+    function getStyle(obj, attr) {
+        if (window.getComputedStyle) {
+            return window.getComputedStyle(obj, null)[attr];
+        } else {
+            return obj.currentStyle[attr];
+        }
+    }
+    </script>
+</body>
+
+</html>
